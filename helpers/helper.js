@@ -4,12 +4,47 @@ const path = require('node:path');
 const dotenv = require('dotenv').config({path:path.join(__dirname,'../.env')});
 const uri = `mongodb+srv://crunk_user:${process.env.MONGO_PASSWORD}@cluster0.07m6w.mongodb.net/?retryWrites=true&w=majority`;
 const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true, serverApi: ServerApiVersion.v1 });
-exports.UpdateUserScore = async function() {
-  console.log("Running:");
-  client.connect().then(console.log("Connected"));
+exports.getHighScore = async function(req,res) {
+  console.log("Getting high score of " + req.headers.player_name);
+   await client.connect().then(console.log("Connected"));
 
+  let score_record = await client.db("cloudy_words").collection("highscores").findOne({name:req.headers.player_name});
+  if(!score_record){ return res.send({"score":0});}
+  res.send(score_record);
   client.close();
 }
+exports.fetchHighscores = async (req,res) =>{
+
+  await client.connect().catch((error) => console.log("Error connecting to database"));
+  let score_list = client.db("cloudy_words").collection("highscores").find();
+  if(!score_list){return;}
+  score_list = await score_list.toArray();
+  score_list.sort((a,b) => b.score - a.score);
+  res.send(score_list);
+}
+exports.updateHighscore = async (req,res) =>{
+
+  if(!req.headers.score) {return;}
+  await client.connect().catch(error => res.send({"updated":false}));
+
+  let user_score = await client.db("cloudy_words").collection("highscores").findOne({name:req.headers.name});
+  if(user_score)
+  {
+    let message = req.headers.score > user_score.score?`Your new highscore is ${req.headers.score}!`:`Good job. You scored ${req.headers.score} points!`;
+    if(req.headers.score > user_score.score)
+    {
+      console.log(`Setting new highscore for ${req.headers.name}. ${req.headers.score} is greater than ${user_score.score}`);
+      await client.db("cloudy_words").collection("highscores").updateOne({name:req.headers.name},{ $set:{score:req.headers.score} })
+      .then(result => res.send({"message":message})).catch((error) => res.send({"updated":false}));
+      return;
+    }
+    res.send({"message":`Good job. You scored ${req.headers.score} points!`});
+    return;
+
+  }
+  await client.db("cloudy_words").collection("highscores").insertOne({name:req.headers.name, score:req.headers.score})
+  .then((result) => res.send({"message":`Good job! You scored ${req.headers.score} points!`})).catch((error) => res.send({"updated":false}));
+} 
 /*exports.UP = async function()
 {
   let doc = [];
@@ -86,8 +121,8 @@ exports.verifySession = async (req,res,next) =>{
 exports.insertWord = async(req,res,next) =>{
 
 await client.connect().catch((error) => console.log(error));
-let { word, translations, unit } = req.body;
-let word_doc = {word:word,translations:translations.split(','),unit:unit};
+let { word, translations, unit, type } = req.body;
+let word_doc = {word:word,translations:translations.split(','),unit:unit,type:type};
 await client.db("cloudy_words").collection("words").insertOne(word_doc).then(v => {return next();}).catch(err => {return next()});
 
 }

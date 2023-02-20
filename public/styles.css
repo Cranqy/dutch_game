@@ -5,11 +5,33 @@ body {
   text-align: center;
   background-image: url("https://i.imgur.com/QJgXYOd.jpg");
 }
+.navbar
+{
+  display:flex;
+  justify-content:space-around;
+  background-color: rgb(34, 81, 124);
+  height:auto;
+  width:100%;
+  margin-top:5px;
+  margin-bottom:5px;
+  padding:5px;
+  opacity:0.7;
+}
+
+.navbar ul a
+{
+  display:inline-block;
+  color:#00dbdb;
+  font:25px monospace;
+  padding:10px;
+  text-decoration: none;
+}
 #game
 {
   background-color:grey;
   border: 2px solid green;
-  border-radius:5%
+  border-radius:5%;
+  margin-left:10px;
 }
 #game:hover
 {
@@ -20,6 +42,7 @@ body {
   display:inline-block;
   justify-content:center;
 }
+
 #text_container
 {
   background-image: url("https://i.imgur.com/uU8hhsr.png");
@@ -62,7 +85,7 @@ body {
 }
 #quit_button
 {
-  background-color:red
+  background-color:red;
 }
 #scoreboard
 {
@@ -70,6 +93,47 @@ body {
   width:200px;
   background-image: url("https://i.imgur.com/2lGCeFG.png");
   margin:0px;
+}
+#game_score
+{
+  width:100%;
+  height:auto;
+  border:1px solid black;
+  text-align: center;
+  font: 30px monospace;
+  color:white;
+  background-image: linear-gradient(to bottom,rgb(87, 85, 3) ,rgb(151, 142, 10));
+  margin-top:10px;
+
+}
+#highscoresinner
+{
+  border-top: 2px solid black;
+  border-bottom:2px solid black;
+  width:100%;
+  height:90%;
+  margin-top:10px;
+  font:25px monospace;
+  color:rgb(230, 206, 171);
+  text-align: left;
+
+}
+#highscores
+{
+  display:block;
+  font: 30px monospace;
+  color:white;
+  max-width:250px;
+  min-width:100px;
+  max-height:350px;
+  min-height:100px;
+  height:auto;
+  overflow-y:scroll;
+  background-image: linear-gradient(to bottom,rgb(87, 85, 3) ,rgb(151, 142, 10));
+  padding:10px;
+  margin-left:10px;
+  border:2px solid black;
+  border-radius:10px;
 }
 #big_container
 {
@@ -85,6 +149,7 @@ body {
   background-color:black;
   border:1px solid white;
   border-radius:10px;
+  height:auto;
 }
 #help
 {
@@ -148,7 +213,7 @@ option,select
   padding:10px;
   border:2px solid rgb(164, 182, 0);
 }
-th,input, table th
+th, table th
 {
   font:20px arial;
   color:white;
@@ -156,7 +221,18 @@ th,input, table th
   border:2px solid rgb(11, 77, 36);
   margin:10px;
 }
-th,td,input
+.admininput
+{
+  font:20px arial;
+  color:white;
+  height:40px;
+  margin:10px;
+  text-align:center;
+  border:1px solid white;
+  background-color:black;
+  padding:10px;
+}
+th,td,admininput
 {
   text-align:center;
   border:1px solid white;
@@ -220,34 +296,60 @@ td:hover
   top:1px;
   background-image: linear-gradient(to right, rgb(148, 189, 0) ,rgb(11, 182, 25));
 }
+#addword
+{
+  height:50px;
+  background-image: linear-gradient(to right, rgb(148, 189, 0) ,rgb(11, 182, 25));
+}
+#addword:hover
+{
+  height:50px;
+  background-image: linear-gradient(to left, rgb(148, 189, 0) ,rgb(11, 182, 25));
+}
 #unit_selector
 {
-  display:flex;
-  width:100%;
+  display:inline-table; 
+  position:relative;
+
 }
 .unit_holder
 {
-  border:1px solid black;
-  width:100%;
-  background-image: linear-gradient(to right, rgb(84, 107, 2) ,rgb(110, 86, 4));
+  background-color:#a1950c;
+  border:1px solid #12541a;
+  box-shadow:5px 8px black;
+  display:inline-block;
+  width:50px;
+  height:50px;
+  position:relative;
+  margin-top:20px;
 }
 #unit_selector label
 {
+  color:black;
+  align-content:center;
   width:100%;
   font-size:15px;
   position:relative;
 }
 .checkbox
 {
-  cursor:cell;
-  position:relative;
   opacity:0.8;
-  width:100%;
+  width:20px;
+  height:20px;
+  border: 2px solid green;
+  border-radius:50%;
+  accent-color:orange;
+}
+.infotext
+{
+  font-family: palatino (serif);
+  font-size: 15px;
 }
 #info_button
 {
   position:relative;
   left:270px;
+  top:10px;
   font-size: 20px;
   text-decoration: none;
   padding:10px;

@@ -12,7 +12,7 @@ function SaveTableChanges()
         try
         {
             let values = table_rows[dat].getElementsByTagName("td");
-            doc_list.push({word:values[0].textContent,translations:values[1].textContent.split(","),unit:values[2].textContent});
+            doc_list.push({word:values[0].textContent,translations:values[1].textContent.split(","),unit:values[2].textContent,type:values[3].textContent});
         }
         catch(error)
         {
@@ -37,10 +37,10 @@ function SaveTableChanges()
 function LoadTables(words)
 {
     const table = document.getElementById("word_table");
-    let table_string = "<tr><th>Word</th><th>Translations</th><th>Unit</th></tr>";
+    let table_string = "<tr><th>Word</th><th>Translations</th><th>Unit</th><th>Type</th></tr>";
     for(let w in words)
     {
-        let new_html = `<tr><td contenteditable="true">${words[w].word}</td><td contenteditable="true">${words[w].translations}</td><td contenteditable="true">${words[w].unit}</td></tr>`;
+        let new_html = `<tr><td contenteditable="true">${words[w].word}</td><td contenteditable="true">${words[w].translations}</td><td contenteditable="true">${words[w].unit}</td><td contenteditable="true">${words[w].type}</td></tr>`;
         table_string += new_html;
     }
     table.innerHTML = table_string;

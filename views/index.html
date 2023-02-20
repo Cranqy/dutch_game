@@ -2,9 +2,18 @@
 <head>
   <link rel="stylesheet" href="/styles.css">
 </head>
+  <nav class="navbar">
+    <ul>
+        <a href="/auth/admin" class="navlink">Admin</a>
+        <a href="/auth/login" class="navlink">Login</a>
+    </ul>
+</nav>
 <body onload="FirstStart()" >
   <div id="big_container">
       <div id="scoreboard_container">
+        <div id="game_score">
+          1923845
+        </div>
         <div id="scoreboard">
           <p id="scoreboard_matched" class="score">0</p>
           <p id="scoreboard_lost" class="score">0</p>
@@ -20,8 +29,8 @@
           <p id="pause_button" class="hotbar"
           onclick="Pause()">Pause</p>
         </div>
-       <a href='/auth/admin'><button>Admin</button></a>
        <div id="unit_selector">
+        
         <div class="unit_holder">
         <label for="unit_1">Unit 1</label>
         <input type="checkbox" class="checkbox" name="1" id="unit_1" onchange="UpdateGameWords()">
@@ -56,7 +65,9 @@
         </div>
        </div>
     </div>
-    
+    <div id="highscores">HIGHSCORES
+      <div id="highscoresinner">some stuff in here ut some more<br>andnow<br>another break and a<br> nother one</div>
+    </div>
   </div>
   <div id="help_container">
          <p id="help">Type the translation of the word (Dutch/English) to gain fuel from the clouds and continue your air balloon adventure! Don't miss too many, or your balloon will run out of fuel! (o.o)('')</p>

@@ -29,7 +29,9 @@ app.get('/',(req,res) =>{
   res.sendFile(path.join(__dirname,"/views/index.html"));
 })
 app.get('/getgamewords',helper.getGameWords);
-
+app.get('/gethighscore',helper.getHighScore);
+app.get('/updatehighscore',helper.updateHighscore);
+app.get('/fetchhighscores',helper.fetchHighscores);
 
 
 app.listen(port, (error) => {

@@ -1,4 +1,3 @@
-const WORD_LIST = [["engels","english"],["english","engels"],["nederlands","dutch"],["dutch","nederlands"]["jongen","boy"],["meisje","girl"],["kip","chicken"],["chicken","kip"],["een","a"],["a","een"],["ik","i"],["i","ik"],["spreek","speak"],["speak","spreek"],["koe","cow"],["cow","koe"],["vrouw","woman"],["woman","vrouw"],["thee","tea"],["tea","thee"],["de","the"],["het","the"],["en","and"],["and","en"],["man","man"],["kind","child"],["child","kind"],["kinderen","children"],["children","kinderen"],["melk","milk"],["milk","melk"],["sap","juice"],["juice","sap"],["spreekt","speaks"],["speaks","spreekt"],["beetje","bit"],["bit","beetje"],["rijst","rice"],["rice","rijst"],["je","you"],["slecht","bad"],["goed","good"],["good","goed"],["goedemorgen","good morning"],["good morning","goedemorgen"],["goedenavond","good evening"],["good evening","goedenavond"],["boterham","sandwich"],["sandwich","boterham"],["vis","fish"],["fish","vis"]["dog","hond"],["hond","dog"],["kat","cat"],["cat","kat"],["vogel","bird"],["bird","vogel"],["muis","mouse"],["mouse","muis"],["dier","animal"],["animal","dier"],["olifant","elephant"],["elephant","olifant"],["eend","duck"],["duck","eend"],["konijn","rabbit"],["rabbit","konijn"],["paard","horse"],["horse","paard"],["schildpad","turtle"],["turtle","schildpad"],["varken","pig"],["pig","varken"],["hert","deer"],["deer","hert"],["neushoorn","rhinoceros"],["rhinoceros","neushoorn"],["wijn","wine"],["wine","wijn"],["suiker","sugar"],["sugar","suiker"],["nee","no"],["no","nee"],["hij","he"],["he","hij"],["jij","you"],["wij","we"],["we","we"],["links","left"],["rechts","right"],["u","you"],["dank u","thank you"],["niet","not"],["dank je wel","thank you"],["leraar","teacher"],["teacher","leraar"],["blij","happy"],["happy","blij"],["leuk","funny"],["funny","leuk"],["mooi","pretty"],["pretty","mooi"],["oud","old"],["old","oud"],["jong","young"],["young","jong"],["voetballer","footballer"],["footballer","voetballer"],["slager","butcher"],["butcher","slager"],["bakker","baker"],["baker","bakker"],["boer","farmer"],["farmer","boer"],["visser","fisherman"],["fisherman","visser"],["advocaat","lawyer"],["lawyer","advocaat"],["dokter","doctor"],["doctor","dokter"],["ober","waiter"],["waiter","ober"],["kapper","hairdresser"],["hairdresser","kapper"],["verkoper","salesman"],["salesman","verkoper"],["soep","soup"],["soup","soep"],["brood","bread"],["bread","brood"],["dorst","thirst"],["thirst","dorst"],["vlees","meat"],["meat","vlees"],["kaas","cheese"],["cheese","kaas"],["bord","plate"],["plate","bord"],["glas","glass"],["glass","glas"],["pardon","excuse me"],["excuse me","pardon"],["heeft","has"],["has","heeft"],["honger","hunger"],["hunger","honger"],["ontbijt","breakfast"],["breakfast","ontbijt"],["tomaat","tomato"],["tomato","tomaat"],["het spijt me","i'm sorry"],["i'm sorry","het spijt me"],["ik heet","my name is"],["my name is","ik heet"],["maaltijd","meal"],["meal","maaltijd"],["goededag","good day"],["good day","goededag"],["aardbei","strawberry"],["strawberry","aardbei"],["banaan","banana"],["banana","banaan"]];
 const DB_WORDS = [];
 const game_area = document.getElementById("game");
 const text = document.getElementById("text_container");
@@ -26,115 +25,128 @@ window.addEventListener('keydown', function(event) {
   CG.HandleInput(event);
 });
 window.addEventListener('blur', (event) => {
-  if(!CG){return;}
-  if(CG.game_state == null) {return;}
+  if (!CG) { return; }
+  if (CG.game_state == null || CG.game_state == "newgame" || CG.game_state == "gameover") { return; }
   CG.SetState("pause");
 });
 
 
 
-function UpdateScreen()
-{
+function UpdateScreen() {
   let timestamp = Date.now();
   let dt = timestamp - last_update;
-  if(dt < 1000/30) {return;}
-  ctx.clearRect(0,0,1000,400);
+  if (dt < 1000 / 30) { return; }
+  ctx.clearRect(0, 0, 1000, 400);
   DrawBackground();
   ScrollClouds(dt);
   CG.Update(dt);
   ControlPauseButton(CG.game_state);
   last_update = timestamp;
-    
-  
-  
+
+
+
 }
 
-function DrawBackground()
-{
-  if(!ctx || !bg) {return;}
+function DrawBackground() {
+  if (!ctx || !bg) { return; }
   ctx.fillStyle = "#0fdbce";
-  ctx.drawImage(bg,0,0,1000,400);
+  ctx.drawImage(bg, 0, 0, 1000, 400);
 }
-function ScrollClouds(d)
-{
-  if(!bg_clouds && cloud_scroll){return;}
-  let delta_time = d/1000;
-  //let x_pos_stars =  (foreground_offset * 0.25) % foreground_width;
-  let x_pos_bg =  (foreground_offset * 0.125) % foreground_width;
+function ScrollClouds(d) {
+  if (!bg_clouds && cloud_scroll) { return; }
+  let delta_time = d / 1000;
+  let x_pos_bg = (foreground_offset * 0.125) % foreground_width;
   let x_pos = foreground_offset % foreground_width;
   let x_pos_2 = (foreground_offset * 0.25) % foreground_width;
-  //ctx.drawImage(bg_stars,x_pos_stars,0,foreground_width,foreground_height);
-  //ctx.drawImage(bg_stars,x_pos_stars+foreground_width,0,foreground_width,foreground_height);
-  ctx.drawImage(bg_clouds,x_pos_bg,0,foreground_width,foreground_height);
-  ctx.drawImage(bg_clouds,x_pos_bg+foreground_width,0,foreground_width,foreground_height);
-  ctx.drawImage(cloud_scroll,x_pos,0,foreground_width,foreground_height);
-  ctx.drawImage(cloud_scroll,x_pos + foreground_width,0,foreground_width,foreground_height);
-  
-  ctx.drawImage(cloud_scroll,x_pos_2,-200,foreground_width,foreground_height);
-  ctx.drawImage(cloud_scroll,x_pos_2 + foreground_width,-200,foreground_width,foreground_height);
+  ctx.drawImage(bg_clouds, x_pos_bg, 0, foreground_width, foreground_height);
+  ctx.drawImage(bg_clouds, x_pos_bg + foreground_width, 0, foreground_width, foreground_height);
+  ctx.drawImage(cloud_scroll, x_pos, 0, foreground_width, foreground_height);
+  ctx.drawImage(cloud_scroll, x_pos + foreground_width, 0, foreground_width, foreground_height);
+
+  ctx.drawImage(cloud_scroll, x_pos_2, -200, foreground_width, foreground_height);
+  ctx.drawImage(cloud_scroll, x_pos_2 + foreground_width, -200, foreground_width, foreground_height);
   foreground_offset -= 30 * delta_time;
 }
-function Play()
-{
-  if(CG)
-    {
-      if(CG.game_state == "play" || CG.game_state == "pause" || CG.game_state == "newgame") {return console.log(CG.game_state);}
-      CG.SetState("newgame");
-    }
+function Play() {
+  if (CG) {
+    if (CG.game_state == "play" || CG.game_state == "pause" || CG.game_state == "newgame") { return console.log(CG.game_state); }
+    CG.SetState("newgame");
+  }
 }
-function Pause()
-{
-  if(CG)
-    {
-      if(!CG.game_state){return;}
-      if(CG.game_state == "gameover") {return;}
-      if(CG.game_state == "pause")
-        {
-          CG.SetState("play");
-          return;
+function Pause() {
+  if (CG) {
+    if (!CG.game_state) { return; }
+    if (CG.game_state == "gameover" || CG.game_state == "newgame") { return; }
+    if (CG.game_state == "pause") {
+      CG.SetState("play");
+      return;
+    }
+    CG.SetState("pause");
+
+  }
+
+}
+function StartUpdateLoop() {
+  game_loop = setInterval(function() { UpdateScreen(); }, 30);
+}
+async function FirstStart() {
+  if (!CG) { return; }
+  await GetHighscores();
+  let game = await new Promise((res,rej) =>{
+
+    fetch('/getgamewords').then((res) => res.json()).then((data) => {
+
+      data.forEach(function(w) {
+        if (!DB_WORDS[w.unit]) {
+          DB_WORDS[w.unit] = [w];
         }
-      CG.SetState("pause");
-      
-    }
+        else {
+          DB_WORDS[w.unit].push(w);
+        }
   
-}
-function StartUpdateLoop()
-{
-  game_loop = setInterval(function() {UpdateScreen();},30);
-}
-function FirstStart()
-{
-  if(!CG){return;}
-  fetch('/getgamewords').then((res) => res.json()).then((data) => {
+      })
+    }).then(() => CG.SetWordList(DB_WORDS)).then(() => res()).catch((err) => rej());
 
-    data.forEach(function(w) {
-      if(!DB_WORDS[w.unit])
-      {
-        DB_WORDS[w.unit] = [w];
-      }
-      else
-      {
-        DB_WORDS[w.unit].push(w);
-      }
-      
-    })
-  }).then(() => CG.SetWordList(DB_WORDS)).then(() => game_loop = setInterval(function() {UpdateScreen();},30));
+  }).then((resp) => game_loop = setInterval(function() { UpdateScreen(); }, 30)).catch(() => console.log("Error starting game. Try refreshing page"));
 
   
+
 }
-function ControlPauseButton(g_state)
+async function GetHighscores()
 {
-  if(!g_state){return;}
-  let pause_button = document.getElementById("pause_button");
-  switch(g_state)
+  let hs_container = document.getElementById("highscoresinner");
+  if(!hs_container) {return;}
+  let hs_list = await new Promise((res,rej) =>{
+
+    fetch('/fetchhighscores',
     {
-      case "pause": pause_button.innerHTML = "Unpause";
-        break;
-      default: pause_button.innerHTML = "Pause";
-    }
+      method:'GET',
+      headers:
+      {
+        "Content-Type":'application/json'
+      }
+    }).then((res) => res.json()).then((data) => res(data)).catch(error => rej());
+
+  }).then((list) => list).catch(error => null);
+
+  if(!hs_list){hs_container.innerHTML = "Couldn't fetch highscores"; return;}
+  let score_text = '';
+  for(var i = 0; i < 10; i++)
+  {
+    score_text += `${i+1}:<span>${hs_list[i].name}</span> - ${hs_list[i].score}<br>`;
+  }
+  hs_container.innerHTML = score_text;
 }
-function UpdateGameWords()
-{
-  if(!CG){return;}
+function ControlPauseButton(g_state) {
+  if (!g_state) { return; }
+  let pause_button = document.getElementById("pause_button");
+  switch (g_state) {
+    case "pause": pause_button.innerHTML = "Unpause";
+      break;
+    default: pause_button.innerHTML = "Pause";
+  }
+}
+function UpdateGameWords() {
+  if (!CG) { return; }
   CG.UpdateWordIndexes();
 }
